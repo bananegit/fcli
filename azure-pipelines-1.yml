@@ -1,0 +1,23 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: FortifyScanCentralSAST@7
+  inputs:
+    scanCentralCtrlUrl: 'https://scsastctrl.uat.fortifyhosted.net/scancentral-ctrl'
+    scanCentralClientToken: '$(SCSAST_Token)'
+    sscUrl: 'https://ssc.uat.fortifyhosted.net'
+    sscCiToken: '$(SSC_Token)'
+    uploadToSSC: true
+    applicationName: 'FCLI_Test'
+    applicationVersion: 'develop'
+    buildFailureCriteria: '[fortify priority order]:critical'
+    buildTool: 'gradle'
